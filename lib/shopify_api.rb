@@ -174,12 +174,14 @@ class ShopifyAPI
     inventory.add_wombat_obj @payload['inventory']
     puts 'INV: ' + @payload['inventory'].to_json
     inventory_item_id = find_inventory_id_by_sku(inventory.sku)
-
-    unless inventory_item_id.blank?
-      message = "Set inventory of SKU #{inventory.sku} " +
+    message = if inventory_item_id.nil?
+              then 'Could not find item with SKU of ' + inventory.sku
+              else "Set inventory of SKU #{inventory.sku} " +
                 "to #{inventory.quantity}."
+              end
+    unless inventory_item_id.nil?
+
       begin
-        message = 'Could not find item with SKU of ' + inventory.sku
         result = api_post 'inventory_levels/set.json', { 'location_id': ENV.fetch('QUIET_SHOPIFY_LOCATION'), 'inventory_item_id': inventory_item_id, 'available': inventory.quantity }
       rescue RestClient::UnprocessableEntity => e
         result = api_put "inventory_items/#{inventory_item_id}.json", { "inventory_item": { "id": inventory_item_id, "tracked": true } }
@@ -325,7 +327,7 @@ def find_inventory_id_by_sku(sku)
   more_data = true
   while more_data
     shopify_objs = if link.nil?
-                     api_get 'products', {}
+                     api_get 'products', { limit: 250 }
                    else api_get 'products', { link: link }
                    end
 
