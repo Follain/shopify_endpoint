@@ -330,7 +330,7 @@ def find_inventory_id_by_sku(sku)
                    end
 
     link = shopify_objs.to_h['link']
-    more_data = !link.nil
+    more_data = !link.nil?
 
     shopify_objs['products'].each do |product|
       product['variants'].each do |variant|
