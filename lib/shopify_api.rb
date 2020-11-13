@@ -321,16 +321,18 @@ class ShopifyAPI
 end
 
 def find_inventory_id_by_sku(sku)
-  count = (api_get 'products/count')['count']
-  page_size = 250
-  pages = (count / page_size.to_f).ceil
-  current_page = 1
+  link = nil
+  more_data = true
+  while more_data
+    shopify_objs = if link.nil?
+                     api_get 'products', {}
+                   else api_get 'products', { link: link }
+                   end
 
-  while current_page <= pages
-    products = api_get 'products',
-                       { 'limit' => page_size, 'page' => current_page }
-    current_page += 1
-    products['products'].each do |product|
+    link = shopify_objs.to_h['link']
+    more_data = !link.nil
+
+    shopify_objs['products'].each do |product|
       product['variants'].each do |variant|
         return variant['inventory_item_id'].to_s if variant['sku'] == sku
       end
