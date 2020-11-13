@@ -263,7 +263,7 @@ class ShopifyAPI
 
     params.merge!(fulfillment_status: 'unfulfilled') if objs_name.start_with?('orders')
     params.merge!(limit: 250)
-
+    link = nil
     more_data = true
     while more_data
 
