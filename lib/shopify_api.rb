@@ -275,7 +275,7 @@ class ShopifyAPI
 
       link = shopify_objs.to_h['link']
       more_data = !link.nil?
-      byebug
+
       if shopify_objs.values.first.is_a?(Array)
         unless shopify_objs.values[0].empty?
           shopify_objs.values.first.each do |shopify_obj|
