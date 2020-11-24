@@ -263,12 +263,11 @@ class ShopifyAPI
 
     # get first record set
 
-    params.merge!(fulfillment_status: 'unfulfilled') if objs_name.start_with?('orders')
+    params.merge!(fulfillment_status: 'unfulfilled', status: 'open') if objs_name.start_with?('orders')
     params.merge!(limit: 250)
     link = nil
     more_data = true
     while more_data
-
       shopify_objs = if link.nil?
                        api_get objs_name, params
                      else api_get objs_name, { link: link }
@@ -278,10 +277,12 @@ class ShopifyAPI
       more_data = !link.nil?
 
       if shopify_objs.values.first.is_a?(Array)
-        shopify_objs.values.first.each do |shopify_obj|
-          obj = obj_class.new
-          obj.add_shopify_obj shopify_obj, self
-          objs << obj
+        unless shopify_objs.values[0].empty?
+          shopify_objs.values.first.each do |shopify_obj|
+            obj = obj_class.new
+            obj.add_shopify_obj shopify_obj, self
+            objs << obj
+          end
         end
       else
         obj = obj_class.new
