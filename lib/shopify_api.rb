@@ -259,7 +259,7 @@ class ShopifyAPI
       # params[:created_at_min] = (DateTime.now-30).in_time_zone('Eastern Time (US & Canada)').to_s(:iso8601)
     end
 
-    sleep(0.3)
+    sleep(0.5)
 
     # get first record set
 
@@ -275,7 +275,7 @@ class ShopifyAPI
 
       link = shopify_objs.to_h['link']
       more_data = !link.nil?
-
+      byebug
       if shopify_objs.values.first.is_a?(Array)
         unless shopify_objs.values[0].empty?
           shopify_objs.values.first.each do |shopify_obj|
