@@ -60,7 +60,10 @@ class Order
       }
     end
 
-    if shopify_order['shipping_address'].nil? && @source_name == 'pos' && @tags.downcase.include?('quiet')
+    if (!shopify_order['shipping_address'].present? &&
+       @source_name == 'pos' &&
+       @tags.downcase.include?('quiet') &&
+       !shopify_order['customer']['default-address'].nil?)
       @shipping_address = {
         'firstname' => shopify_order['customer']['default-address']['first_name'],
         'lastname' => shopify_order['customer']['default-address']['last_name'],
