@@ -60,6 +60,21 @@ class Order
       }
     end
 
+    if shopify_order['shipping_address'].nil? && @source_name == 'pos' && @tags.downcase.include?('quiet')
+      @shipping_address = {
+        'firstname' => shopify_order['customer']['default-address']['first_name'],
+        'lastname' => shopify_order['customer']['default-address']['last_name'],
+        'company' => shopify_order['customer']['default-address']['company'],
+        'address1' => shopify_order['customer']['default-address']['address1'],
+        'address2' => shopify_order['customer']['default-address']['address2'],
+        'zipcode' => shopify_order['customer']['default-address']['zip'],
+        'city' => shopify_order['customer']['default-address']['city'],
+        'state' => shopify_order['customer']['default-address']['province'],
+        'country' => shopify_order['customer']['default-address']['country_code'],
+        'phone' => shopify_order['customer']['default-address']['phone']
+      }
+    end
+
     unless shopify_order['billing_address'].nil?
       @billing_address = {
         'firstname' => shopify_order['billing_address']['first_name'],
