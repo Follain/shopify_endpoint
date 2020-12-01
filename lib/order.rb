@@ -59,9 +59,11 @@ class Order
         'phone' => shopify_order['shipping_address']['phone']
       }
     end
+
     customer = shopify_order['customer']
-    s_address = shopify_order['shipping_address']
-    if s_address.nil? &&
+    if shopify_order['shipping_address'].nil? &&
+       !customer.nil? &&
+       !customer['default-address'].nil? &&
        @source_name == 'pos' &&
        @tags.downcase.include?('quiet')
       @shipping_address = {
