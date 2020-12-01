@@ -60,7 +60,8 @@ class Order
       }
     end
     customer = shopify_order['customer']
-    if shopify_order['shipping_address'].nil? &&
+    s_address = shopify_order['shipping_address']
+    if s_address.nil? &&
        @source_name == 'pos' &&
        @tags.downcase.include?('quiet')
       @shipping_address = {
