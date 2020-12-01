@@ -65,7 +65,7 @@ class Order
        !customer.nil? &&
        !customer['default_address'].nil? &&
        @source_name == 'pos' &&
-       @tags.downcase.include?('quiet')
+       @tags.downcase.include?('ship from quiet')
       @shipping_address = {
         'firstname' => customer['default_address']['first_name'],
         'lastname' => customer['default_address']['last_name'],
