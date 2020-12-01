@@ -59,22 +59,21 @@ class Order
         'phone' => shopify_order['shipping_address']['phone']
       }
     end
-
-    if (!shopify_order['shipping_address'].present? &&
+    customer = shopify_order['customer']
+    if shopify_order['shipping_address'].nil? &&
        @source_name == 'pos' &&
-       @tags.downcase.include?('quiet') &&
-       !shopify_order['customer']['default-address'].nil?)
+       @tags.downcase.include?('quiet')
       @shipping_address = {
-        'firstname' => shopify_order['customer']['default-address']['first_name'],
-        'lastname' => shopify_order['customer']['default-address']['last_name'],
-        'company' => shopify_order['customer']['default-address']['company'],
-        'address1' => shopify_order['customer']['default-address']['address1'],
-        'address2' => shopify_order['customer']['default-address']['address2'],
-        'zipcode' => shopify_order['customer']['default-address']['zip'],
-        'city' => shopify_order['customer']['default-address']['city'],
-        'state' => shopify_order['customer']['default-address']['province'],
-        'country' => shopify_order['customer']['default-address']['country_code'],
-        'phone' => shopify_order['customer']['default-address']['phone']
+        'firstname' => customer['default-address']['first_name'],
+        'lastname' => customer['default-address']['last_name'],
+        'company' => customer['default-address']['company'],
+        'address1' => customer['default-address']['address1'],
+        'address2' => customer['default-address']['address2'],
+        'zipcode' => customer['default-address']['zip'],
+        'city' => customer['default-address']['city'],
+        'state' => customer['default-address']['province'],
+        'country' => customer['default-address']['country_code'],
+        'phone' => customer['default-address']['phone']
       }
     end
 
