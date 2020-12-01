@@ -63,20 +63,20 @@ class Order
     customer = shopify_order['customer']
     if shopify_order['shipping_address'].nil? &&
        !customer.nil? &&
-       !customer['default-address'].nil? &&
+       !customer['default_address'].nil? &&
        @source_name == 'pos' &&
        @tags.downcase.include?('quiet')
       @shipping_address = {
-        'firstname' => customer['default-address']['first_name'],
-        'lastname' => customer['default-address']['last_name'],
-        'company' => customer['default-address']['company'],
-        'address1' => customer['default-address']['address1'],
-        'address2' => customer['default-address']['address2'],
-        'zipcode' => customer['default-address']['zip'],
-        'city' => customer['default-address']['city'],
-        'state' => customer['default-address']['province'],
-        'country' => customer['default-address']['country_code'],
-        'phone' => customer['default-address']['phone']
+        'firstname' => customer['default_address']['first_name'],
+        'lastname' => customer['default_address']['last_name'],
+        'company' => customer['default_address']['company'],
+        'address1' => customer['default_address']['address1'],
+        'address2' => customer['default_address']['address2'],
+        'zipcode' => customer['default_address']['zip'],
+        'city' => customer['default_address']['city'],
+        'state' => customer['default_address']['province'],
+        'country' => customer['default_address']['country_code'],
+        'phone' => customer['default_address']['phone']
       }
     end
 
