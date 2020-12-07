@@ -181,12 +181,12 @@ class ShopifyAPI
               end
     unless inventory_item_id.nil?
 
-      begin
-        result = api_post 'inventory_levels/set.json', { 'location_id': ENV.fetch('QUIET_SHOPIFY_LOCATION'), 'inventory_item_id': inventory_item_id, 'available': inventory.quantity }
-      rescue RestClient::UnprocessableEntity => e
-        result = api_put "inventory_items/#{inventory_item_id}.json", { "inventory_item": { "id": inventory_item_id, "tracked": true } }
-        result = api_post 'inventory_levels/set.json', { 'location_id': ENV.fetch('QUIET_SHOPIFY_LOCATION'), 'inventory_item_id': inventory_item_id, 'available': inventory.quantity }
-      end
+      sleep(0.1)
+      result = api_post 'inventory_levels/set.json', { 'location_id': ENV.fetch('QUIET_SHOPIFY_LOCATION'), 'inventory_item_id': inventory_item_id, 'available': inventory.quantity }
+      # rescue RestClient::UnprocessableEntity => e
+      # result = api_put "inventory_items/#{inventory_item_id}.json", { "inventory_item": { "id": inventory_item_id, "tracked": true } }
+      # result = api_post 'inventory_levels/set.json', { 'location_id': ENV.fetch('QUIET_SHOPIFY_LOCATION'), 'inventory_item_id': inventory_item_id, 'available': inventory.quantity }
+
     end
     {
       'objects' => result,
